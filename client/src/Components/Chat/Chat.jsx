@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import { AuthContext } from '../context/AuthContext';
 import './Chat.css';
 import GroupChatPrompt from '../GroupChatPrompt/GroupChatPrompt';
+import Loader from '../Loader/Loader';
 
 const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
@@ -18,6 +19,8 @@ const Chat = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchRes, setSearchRes] = useState([]);
   const [isActiveSelected, setIsActiveSelected] = useState();
+  const { isLoading } = useContext(AuthContext);
+  const [showLoader, setShowLoader] = useState(true);
 
   const { user, setIsPromptShow, isPromptShow } = useContext(AuthContext);
   const socket = useRef();
@@ -365,15 +368,8 @@ const Chat = () => {
         socket.current.off('new direct chat', handleNewDirectChat);
       }
     };
-  }, [
-    activeChat,
-    activeGroupChat,
-    user,
-    users,
-    groups,
-    addNewChatToList,
-    refreshChatList,
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeChat, activeGroupChat, user, users, groups]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -565,6 +561,18 @@ const Chat = () => {
   const filteredGroups = groups.filter((group) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  //Loader animation
+  useEffect(() => {
+    if (isLoading) return;
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+  
+  if (isLoading || showLoader) return <Loader />;
 
   return (
     <div className="chat-page">

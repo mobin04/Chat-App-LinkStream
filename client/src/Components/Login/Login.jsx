@@ -9,9 +9,9 @@ function Login() {
   const [password, setPassword] = useState('');
   const [err, setError] = useState('');
   const [showError, setShowError] = useState(false);
-  const {setLoading, setUser} = useContext(AuthContext);
+  const { setLoading, setUser } = useContext(AuthContext);
   const Navigate = useNavigate();
-  
+
   useEffect(() => {
     if (err) {
       setShowError(true);
@@ -32,7 +32,7 @@ function Login() {
     }
     try {
       setLoading(true); // set to true
-      axios.post(
+      await axios.post(
         'http://localhost:8000/api/v1/users/login',
         {
           email,
@@ -42,23 +42,21 @@ function Login() {
           withCredentials: true,
         }
       );
-      setTimeout(async () => {
-        const res = await axios.get('http://localhost:8000/api/v1/users/me', {
-          withCredentials: true,
-        });
-        setUser(res.data.data.user);
-        setLoading(false);
-      }, 2000);
-      
-      Navigate('/')
-      
+
+      const res = await axios.get('http://localhost:8000/api/v1/users/me', {
+        withCredentials: true,
+      });
+      setUser(res.data.data.user);
+      setLoading(false);
+
+      Navigate('/');
     } catch (error) {
-      setLoading(false)
+      console.log(error);
+      setLoading(false);
       setError(error.response.data.message);
     }
   };
 
-  
   return (
     <div className="main-container">
       <div className="login-container">

@@ -42,9 +42,13 @@ const Header = () => {
             <li>
               <a onClick={() => Navigate('/')}>Home</a>
             </li>
-            <li>
-              <a onClick={() => Navigate('/chat')}>Chat</a>
-            </li>
+            {user ? (
+              <li>
+                <a onClick={() => (user ? Navigate('/chat') : '')}>Chat</a>
+              </li>
+            ) : (
+              ''
+            )}
             <li>
               <a onClick={() => Navigate('/groups')}>Groups</a>
             </li>
@@ -80,7 +84,12 @@ const Header = () => {
               </button>
             </div>
           )}
-          {user && <p className='welcome-user'><span>HELLO </span>{user.name.split(' ')[0].toUpperCase()}</p>}
+          {user && (
+            <p className="welcome-user">
+              <span>HELLO </span>
+              {user.name.split(' ')[0].toUpperCase()}
+            </p>
+          )}
         </div>
       </div>
     </header>
