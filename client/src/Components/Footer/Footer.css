@@ -1,0 +1,234 @@
+/* Footer.css */
+.footer {
+  background-color: #121212;
+  color: #f0f0f0;
+  font-family: 'Poppins', sans-serif;
+  padding: 4rem 0 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-logo {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+}
+
+.footer-logo h2 {
+  font-size: 1.8rem;
+  margin: 0 0 1rem;
+}
+
+.footer-logo span {
+  color: #00c6ff;
+}
+
+.footer-logo p {
+  color: #b8b8b8;
+  line-height: 1.6;
+}
+
+.footer-links {
+  flex: 2;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-links-column {
+  min-width: 150px;
+}
+
+.footer-links-column h3 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.footer-links-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 30px;
+  height: 2px;
+  background-color: #00c6ff;
+}
+
+.footer-links-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-column li {
+  margin-bottom: 0.7rem;
+}
+
+.footer-links-column a {
+  color: #b8b8b8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.footer-links-column a:hover {
+  color: #00c6ff;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: #b8b8b8;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #00c6ff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 198, 255, 0.3);
+}
+
+.social-icon:hover::before {
+  background-color: #ffffff;
+}
+
+/* Simple icon shapes using clip-path */
+.social-icon.facebook::before {
+  clip-path: polygon(50% 20%, 50% 80%, 30% 80%, 30% 50%, 80% 50%, 80% 30%, 30% 30%, 30% 20%);
+}
+
+.social-icon.twitter::before {
+  clip-path: polygon(10% 30%, 25% 30%, 35% 20%, 40% 30%, 80% 30%, 70% 45%, 80% 60%, 40% 60%, 35% 70%, 25% 60%, 10% 60%);
+}
+
+.social-icon.instagram::before {
+  clip-path: circle(35% at 50% 50%);
+}
+
+.social-icon.instagram::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #b8b8b8;
+  border-radius: 50%;
+  transition: border-color 0.3s ease;
+}
+
+.social-icon.instagram:hover::after {
+  border-color: #ffffff;
+}
+
+.social-icon.discord::before {
+  clip-path: polygon(30% 35%, 70% 35%, 70% 65%, 55% 65%, 50% 70%, 45% 65%, 30% 65%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.copyright {
+  color: #808080;
+  font-size: 0.9rem;
+}
+
+.language-selector select {
+  background-color: #212121;
+  color: #f0f0f0;
+  border: 1px solid #333;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.language-selector select:hover {
+  border-color: #00c6ff;
+}
+
+.language-selector select:focus {
+  border-color: #00c6ff;
+  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .footer-logo {
+    max-width: 100%;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .social-links {
+    margin-bottom: 1.5rem;
+  }
+  
+  .copyright {
+    order: 3;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
