@@ -17,18 +17,11 @@ dotenv.config({ path: './config.env' });
 
 const app = express();
 
-const allowedOrigins = ['https://link-stream-chi.vercel.app'];
-
 app.use(cors({
-  origin (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: 'https://link-stream-rouge.vercel.app',
   credentials: true
 }));
+
 app.use(helmet());
 
 
