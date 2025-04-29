@@ -14,15 +14,12 @@ const createSendToken = (user, statusCode, req, res) => {
   const token = createToken(user._id);
 
   res.cookie('jwt', token, {
-    // Cookie options
-    expires: new Date( // Convert the days into millisecond
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true, // This ensure that cookie cannot be accesed or modified in anyway by the browser
-    sameSite: 'lax',
-    secure: req.secure || req.headers['x-forwarded-proto'] === 'https', // either true or false
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Only secure in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // MUST be 'None' for cross-site cookies
   });
-
+  
 
   res.status(statusCode).json({
     status: 'success',
