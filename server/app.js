@@ -18,7 +18,7 @@ dotenv.config({ path: './config.env' });
 const app = express();
 
 app.use(cors({
-  origin: 'https://link-stream-1zqvsc3se-mobins-projects-fc6c261b.vercel.app',
+  origin: 'https://link-stream-rouge.vercel.app',
   credentials: true
 }));
 
