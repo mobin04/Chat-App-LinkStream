@@ -17,6 +17,8 @@ function App() {
   const { setUser } = useContext(AuthContext);
   const {setLoading} = useContext(AuthContext);
 
+  axios.defaults.withCredentials = true;
+
   useEffect(() => {
     const fetchUser = () => {
       axios
