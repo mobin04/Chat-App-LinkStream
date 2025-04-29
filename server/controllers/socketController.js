@@ -9,7 +9,7 @@ const onlineUsers = new Map();
 const socketController = server => {
   const io = new Server(server, {
     cors: {
-      origin: 'http://localhost:3000', // or your frontend URL
+      origin: `${process.env.CLIENT_URL}`,
       credentials: true,
     },
   });
