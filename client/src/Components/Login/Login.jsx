@@ -42,8 +42,8 @@ function Login() {
           withCredentials: true,
         }
       );
-
-      if(res.response.data.status === 'success'){
+      
+      if(res.data.status === 'success'){
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
           withCredentials: true,
         });
