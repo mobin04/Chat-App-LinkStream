@@ -20,11 +20,11 @@ function App() {
   useEffect(() => {
     const fetchUser = () => {
       axios
-        .get('http://localhost:8000/api/v1/users/me', {
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
           withCredentials: true,
         })
         .then((res) => {
-          setUser(res.data.data.user); // set into context/state
+          setUser(res.data.data.user);
         })
         .catch(() => {
           setUser(null);

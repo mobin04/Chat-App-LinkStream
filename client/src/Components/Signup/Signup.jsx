@@ -32,7 +32,7 @@ function Signup() {
 
     try {
       axios.post(
-        'http://localhost:8000/api/v1/users/signup',
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/signup`,
         {
           name,
           email,
@@ -44,7 +44,7 @@ function Signup() {
       );
 
       setTimeout(async () => {
-        const res = await axios.get('http://localhost:8000/api/v1/users/me', {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
           withCredentials: true,
         });
         setUser(res.data.data.user);

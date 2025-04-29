@@ -26,8 +26,8 @@ const Chat = () => {
   const socket = useRef();
   const messageEndRef = useRef(null);
 
-  const API_BASE_URL = 'http://localhost:8000';
-  const SOCKET_URL = 'http://localhost:8000';
+  const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}`;
+  const SOCKET_URL = `${import.meta.env.VITE_BACKEND_URL}`;
 
   // Helper functions
   const getChatId = (chat) => chat?.id || chat?._id;
@@ -368,7 +368,7 @@ const Chat = () => {
         socket.current.off('new direct chat', handleNewDirectChat);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChat, activeGroupChat, user, users, groups]);
 
   // Scroll to bottom when messages change
@@ -561,17 +561,17 @@ const Chat = () => {
   const filteredGroups = groups.filter((group) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   //Loader animation
   useEffect(() => {
     if (isLoading) return;
     const timer = setTimeout(() => {
       setShowLoader(false);
-    }, 1000); 
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [isLoading]);
-  
+
   if (isLoading || showLoader) return <Loader />;
 
   return (
@@ -674,14 +674,22 @@ const Chat = () => {
           <div className="chat-main">
             <div className="chat-header">
               <div className="chat-info">
-                <div className={`avatar ${isActiveSelected}`}>
+                <div
+                  className={`avatar ${
+                    activeChat ? isActiveSelected : 'online'
+                  }`}
+                >
                   {activeChat?.avatar || activeGroupChat?.avatar}
                 </div>
                 <div>
                   <h2>
                     {activeChat?.name || activeGroupChat?.name || 'Unknown'}
                   </h2>
-                  <p>{isActiveSelected}</p>
+                  <p>
+                    {activeChat
+                      ? isActiveSelected
+                      : `${activeGroupChat.members.length} members`}
+                  </p>
                 </div>
               </div>
               <i

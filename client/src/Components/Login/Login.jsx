@@ -33,7 +33,7 @@ function Login() {
     try {
       setLoading(true); // set to true
       await axios.post(
-        'http://localhost:8000/api/v1/users/login',
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`,
         {
           email,
           password: pass,
@@ -43,7 +43,7 @@ function Login() {
         }
       );
 
-      const res = await axios.get('http://localhost:8000/api/v1/users/me', {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
         withCredentials: true,
       });
       setUser(res.data.data.user);

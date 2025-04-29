@@ -49,7 +49,7 @@ const GroupChatPrompt = ({socket}) => {
       // Here you would typically make an API call to create the group
       try{
         const res = await axios.post(
-          'http://localhost:8000/api/v1/chat/create-group',
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/chat/create-group`,
           {
             name: groupName,
             userIds,
@@ -102,7 +102,7 @@ const GroupChatPrompt = ({socket}) => {
     } else {
       axios
         .get(
-          `http://localhost:8000/api/v1/users/get-user?search=${searchTerm.toLocaleLowerCase()}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/get-user?search=${searchTerm.toLocaleLowerCase()}`,
           {
             withCredentials: true,
           }

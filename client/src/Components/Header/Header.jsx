@@ -12,7 +12,7 @@ const Header = () => {
 
   const handleLogout = () => {
     axios
-      .get('http://localhost:8000/api/v1/users/logout', {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`, {
         withCredentials: true,
       })
       .then(() => {
