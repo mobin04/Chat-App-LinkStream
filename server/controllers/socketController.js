@@ -9,7 +9,7 @@ const onlineUsers = new Map();
 const socketController = server => {
   const io = new Server(server, {
     cors: {
-      origin: 'https://link-stream-rouge.vercel.app',
+      origin: 'https://link-stream-eta.vercel.app',
       credentials: true,
     },
   });
