@@ -32,7 +32,7 @@ function Login() {
     }
     try {
       setLoading(true); // set to true
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`,
         {
           email,
@@ -43,11 +43,13 @@ function Login() {
         }
       );
 
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
-        withCredentials: true,
-      });
-      setUser(res.data.data.user);
-      setLoading(false);
+      if(res.response.data.status === 'success'){
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
+          withCredentials: true,
+        });
+        setUser(res.data.data.user);
+        setLoading(false);
+      }
 
       Navigate('/');
     } catch (error) {
