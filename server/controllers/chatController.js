@@ -1,6 +1,8 @@
 const Chat = require('../models/chatModel');
+const Message = require('../models/messageModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const { onlineUsers } = require('./socketController');
 
 exports.createChat = catchAsync(async (req, res, next) => {
   const { userId } = req.body;
@@ -52,8 +54,6 @@ exports.getMyChats = catchAsync(async (req, res, next) => {
     return next(new AppError('No chats found!'));
   }
 
-  // const directChats = chats.filter((c) => c.isGroupChat === false);
-  // const groupChats = chats.filter((c) => c.isGroupChat === true);
 
   res.status(200).json({
     status: 'success',
@@ -114,6 +114,23 @@ exports.deleteChat = catchAsync(async (req, res, next) => {
     return next(new AppError('Chat ID not found😑', 400));
   }
 
+  const chat = await Chat.findById(chatId);
+  if (!chat) {
+    return next(new AppError('No chat found!', 404));
+  }
+
+  // Notify users *before* deletion
+  const io = req.app.get('io');
+
+  chat.participants.forEach(participant => {
+    const socketId = onlineUsers.get(participant.toString());
+    if (socketId) {
+      io.to(socketId).emit('chat-deleted-client', chatId);
+    }
+  });
+
+  // Then delete messages and chat
+  await Message.deleteMany({ chat: chatId });
   await Chat.findByIdAndDelete(chatId);
 
   res.status(201).json({

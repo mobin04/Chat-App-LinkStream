@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const http = require('http');
 const app = require('./app');
-const socketController = require('./controllers/socketController');
+const {socketController} = require('./controllers/socketController');
 
 dotenv.config({ path: './config.env' });
 
@@ -18,7 +18,8 @@ mongoose
 
 const server = http.createServer(app);
 
-socketController(server);
+const io = socketController(server);
+app.set('io', io);
 
 const port = process.env.PORT || 5000;
 

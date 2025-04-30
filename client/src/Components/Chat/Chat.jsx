@@ -64,22 +64,24 @@ const Chat = () => {
       socket.current.emit('setup', user);
     });
 
+    // Handle users online status
     socket.current.on('online users', (onlineUserIds) => {
       setUsers((prevUsers) =>
-        prevUsers.map((user) => ({
-          ...user,
-          isActive: onlineUserIds.includes(user?.userId?.toString()),
-        }))
+        prevUsers.map((user) => {
+          const userId = user?.userId?.toString(); // ensure it's string
+          const isActive = userId && onlineUserIds.includes(userId);
+          return { ...user, isActive };
+        })
       );
+    });
 
-      // Also update active chat status if it exists
-      if (activeChat && activeChat.userId) {
-        setIsActiveSelected(
-          onlineUserIds.includes(activeChat.userId.toString())
-            ? 'online'
-            : 'offline'
-        );
-      }
+    // Handle notify chat deletion
+    socket.current.on('chat-deleted-client', (chatId) => {
+      setUsers((prev) => prev.filter((u) => u.id !== chatId));
+      setGroups((prev) => prev.filter((g) => g.id !== chatId));
+
+      if (activeChat?.id === chatId) setActiveChat(null);
+      if (activeGroupChat?.id === chatId) setActiveGroupChat(null);
     });
 
     // Cleanup on unmount
@@ -88,7 +90,8 @@ const Chat = () => {
         socket.current.disconnect();
       }
     };
-  }, [user, activeChat]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   // Helper function to add new chat to list
   const addNewChatToList = (chat) => {
@@ -253,6 +256,10 @@ const Chat = () => {
       const chatId = message.chatId;
       const currentChatId = getChatId(activeChat);
       const currentGroupChatId = getChatId(activeGroupChat);
+
+      setTimeout(() => {
+        socket.current.emit('get-online-users');
+      }, 200);
 
       // Show in current chat
       if (chatId === currentChatId || chatId === currentGroupChatId) {
@@ -481,6 +488,7 @@ const Chat = () => {
           profilePic: chatUser.profilePic || '',
           isActive: true,
           status: 'online',
+          userId: chatUser._id,
         };
 
         if (!isUserInList(users, newChat._id)) {
@@ -524,6 +532,8 @@ const Chat = () => {
         }
       );
       if (res.data.status === 'success') {
+        socket.current.emit('chat-deleted', chatId);
+
         if (activeChat) {
           setActiveChat(null);
           setUsers(users.filter((u) => u.id.toString() !== chatId));

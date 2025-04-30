@@ -50,9 +50,6 @@ const Header = () => {
               ''
             )}
             <li>
-              <a onClick={() => Navigate('/groups')}>Groups</a>
-            </li>
-            <li>
               <a onClick={() => Navigate('/profile')}>Profile</a>
             </li>
           </ul>

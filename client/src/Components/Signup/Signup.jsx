@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import Loader from '../Loader/Loader';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -9,7 +10,8 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [err, setError] = useState('');
   const [showErr, setShowErr] = useState(false);
-  const { setUser, setLoading } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
+  const [isLoading, setLoading] = useState(false);
   const Navigate = useNavigate();
 
   useEffect(() => {
@@ -24,18 +26,25 @@ function Signup() {
     }
   }, [err]);
 
-  const handleSignup = (name, email, pass) => {
+  const handleSignup = async (name, email, pass) => {
     if (!name || !email || !pass) {
-      setError('All fields are mandatory');
+      setError('Please fill out all fields');
+      return;
+    }
+
+    if (pass.length < 6) {
+      setError('Password must atleast 6 characters');
       return;
     }
 
     try {
-      axios.post(
+      setLoading(true);
+      // Send login request
+      const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/signup`,
         {
           name,
-          email,
+          email: email.toLowerCase(),
           password: pass,
         },
         {
@@ -43,20 +52,30 @@ function Signup() {
         }
       );
 
-      setTimeout(async () => {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`, {
-          withCredentials: true,
-        });
-        setUser(res.data.data.user);
+      if (res.data.status === 'success') {
+        const userRes = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/me`,
+          {
+            withCredentials: true,
+          }
+        );
+        setUser(userRes.data.data.user);
         setLoading(false);
-      }, 2000);
-
-      Navigate('/');
-      
-    } catch (err) {
-      setError(err.response.data.message);
+        Navigate('/');
+      } else {
+        setError('Signup failed! Please try again');
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      setError(
+        error?.response?.data?.message || 'Login failed! Please try again'
+      );
     }
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div>
@@ -82,7 +101,7 @@ function Signup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                type="text"
+                type="email"
                 required
               />
               <label htmlFor="password">Password</label>

@@ -1,117 +1,73 @@
 .loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #121212;
-  overflow: hidden;
+  z-index: 1000;
 }
 
-.galaxy-loader {
+.loader-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.loader {
   position: relative;
-  width: 150px;
-  height: 150px;
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001;
 }
 
-.center-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  background-color: #00c6ff;
-  border-radius: 50%;
-  box-shadow: 0 0 25px #00c6ff, 0 0 10px rgba(0, 198, 255, 0.8);
-  animation: pulse 2s ease-in-out infinite;
-  z-index: 10;
+.circle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.particle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: #00c6ff;
+.circle {
+  width: 12px;
+  height: 12px;
+  margin: 0 6px;
   border-radius: 50%;
-  transform-origin: 60px 0;
-  animation: rotate 3s linear infinite;
-  animation-delay: calc(-0.25s * var(--i));
-  filter: hue-rotate(calc(30deg * var(--i)));
-  opacity: 0.7;
-  box-shadow: 0 0 8px #00c6ff;
+  background-color: #fff;
+  animation: pulse 1.4s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
-.orbit-dot {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background-color: #00c6ff;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: orbit 6s linear infinite;
-  animation-delay: calc(-0.75s * var(--j));
-  filter: hue-rotate(calc(45deg * var(--j)));
-  box-shadow: 0 0 10px #00c6ff;
-  z-index: 5;
+.loading-text {
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 3px;
+  font-weight: 300;
+  animation: fade 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%, 100% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0.8;
+    transform: scale(0.5);
+    opacity: 0.3;
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: scale(1);
     opacity: 1;
   }
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg) translateX(60px) rotate(0deg);
+@keyframes fade {
+  0%, 100% {
+    opacity: 0.5;
   }
-  100% {
-    transform: rotate(360deg) translateX(60px) rotate(-360deg);
-  }
-}
-
-@keyframes orbit {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg) translateX(80px) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg) translateX(80px) rotate(-360deg);
-  }
-}
-
-/* Add a trace effect to orbit dots */
-.orbit-dot::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: rgba(0, 198, 255, 0.3);
-  transform: translate(-50%, -50%);
-  filter: blur(2px);
-  animation: fadeOut 2s linear infinite;
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 0.7;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(3);
+  50% {
+    opacity: 1;
   }
 }
